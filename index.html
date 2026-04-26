@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Video Downloader | Full Info</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: url('https://ibb.co/WNFnJRLz') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 30px;
+      width: 400px;
+      color: white;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      outline: none;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .fetch-btn {
+      width: 100%;
+      background: #ff0050;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 0;
+      font-size: 15px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .fetch-btn:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .links button {
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .links button:nth-child(2) {
+      background: #0088cc;
+    }
+
+    .links button:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    video, audio, img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    p {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    a.download {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #0b74de;
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all .3s ease;
+      font-size: 13px;
+    }
+
+    a.download:hover {
+      background: #095fc2;
+      transform: scale(1.05);
+    }
+
+    .loading {
+      display: none;
+      font-size: 14px;
+      margin-top: 10px;
+      color: #ffb6c1;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.5; }
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .stats {
+      margin-top: 10px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 13px;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #fff;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 TikTok Downloader</h1>
+    <input type="text" id="videoURL" placeholder="Paste TikTok link here...">
+    <button class="fetch-btn" onclick="fetchTikTokData()">🚀 Fetch Data</button>
+
+    <div class="links">
+      <button onclick="window.open('https://whatsapp.com/channel/0029VbDE9gMJuyABS6H8Uk24')">💚 Join WhatsApp</button>
+      <button onclick="window.open('https://t.me/jerry')">💙 Join Telegram</button>
+    </div>
+
+    <div class="loading" id="loading">⏳ Fetching TikTok data...</div>
+    <div class="result" id="result"></div>
+
+    <footer>JERRY 🐼 ❤️ — TECH METHODS </footer>
+  </div>
+
+  <script>
+    const videoInput = document.getElementById("videoURL");
+    const result = document.getElementById("result");
+    const loading = document.getElementById("loading");
+
+    function fetchTikTokData() {
+      const url = videoInput.value.trim();
+      if (!url) {
+        alert("Please paste a TikTok link first!");
+        return;
+      }
+
+      result.innerHTML = "";
+      loading.style.display = "block";
+
+      const apiURL = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+
+      fetch(apiURL)
+        .then(res => res.json())
+        .then(data => {
+          loading.style.display = "none";
+
+          if (!data || !data.data) {
+            result.innerHTML = "<p>⚠️ Unable to fetch TikTok data. Try another link.</p>";
+            return;
+          }
+
+          const d = data.data;
+          const video = d.play;
+          const music = d.music;
+          const desc = d.title || "No description available";
+          const cover = d.cover;
+          const authorName = d.author?.nickname || "Unknown";
+          const username = d.author?.unique_id ? `@${d.author.unique_id}` : "";
+          const authorDP = d.author?.avatar || "";
+          const likes = d.digg_count || 0;
+          const comments = d.comment_count || 0;
+          const shares = d.share_count || 0;
+          const views = d.play_count || 0;
+
+          result.innerHTML = `
+            <div class="profile">
+              ${authorDP ? `<img src="${authorDP}" alt="Profile">` : ""}
+              <div>
+                <strong>${authorName}</strong><br><small>${username}</small>
+              </div>
+            </div>
+
+            <div class="stats">
+              ❤️ Likes: ${likes}<br>
+              💬 Comments: ${comments}<br>
+              🔁 Shares: ${shares}<br>
+              👁️ Views: ${views}
+            </div>
+
+            <h3>🎬 Video</h3>
+            <video controls src="${video}"></video>
+            <a class="download" href="${video}" download="tiktok_video_${Date.now()}.mp4">⬇️ Download Video</a>
+
+            <h3>🎧 Audio</h3>
+            <audio controls src="${music}"></audio>
+            <a class="download" href="${music}" download="tiktok_audio_${Date.now()}.mp3">⬇️ Download Audio</a>
+
+            <h3>🖼️ Cover Photo</h3>
+            <img src="${cover}" alt="Thumbnail">
+            <a class="download" href="${cover}" download="tiktok_image_${Date.now()}.jpg">⬇️ Download Image</a>
+
+            <h3>📝 Description</h3>
+            <p>${desc}</p>
+            <a class="download" href="data:text/plain;charset=utf-8,${encodeURIComponent(desc)}" download="tiktok_description.txt">⬇️ Download Description</a>
+          `;
+        })
+        .catch(() => {
+          loading.style.display = "none";
+          result.innerHTML = "<p>❌ Error fetching TikTok data!</p>";
+        });
+    }
+  </script>
+
+
+</body></html
